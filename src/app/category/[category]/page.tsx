@@ -2,20 +2,21 @@ import Link from "next/link";
 import { getTopHeadlines } from "../../../../lib/news";
 import ArticleCard from "../../components/ArticleCard";
 
-// ✅ Correctly typed async server component
 export default async function CategoryPage({
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) {
-  const articles = await getTopHeadlines(params.category);
+  // ✅ Await params before using it
+  const { category } = await params;
+  const articles = await getTopHeadlines(category);
 
   return (
     <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto">
       {/* Category Title */}
       <div className="flex justify-center mb-6">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold capitalize text-gray-800 text-center">
-          {params.category}
+          {category}
         </h1>
       </div>
 
